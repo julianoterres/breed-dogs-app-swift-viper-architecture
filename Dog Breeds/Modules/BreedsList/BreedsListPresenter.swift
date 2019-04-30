@@ -27,13 +27,15 @@ extension BreedsListPresenter: BreedsListViewControllerToPresenterProtocol {
   
   func updaFavorites() {
     
-    if let favorites = UserDefaults.standard.object(forKey: "favorites") as? [String], favorites.count > 0 {
-      
+    if let favoritesSaved = UserDefaults.standard.object(forKey: "favorites") as? Data,
+       let favorites = try? JSONDecoder().decode([Favorites].self, from: favoritesSaved),
+       favorites.count > 0 {
+    
       breedsSaved = breedsSaved.map { (breed) -> Breed in
         return Breed(
           name: breed.name.capitalizingFirstLetter(),
           slug: breed.slug,
-          favorite: favorites.contains(breed.slug)
+          favorite: !favorites.filter({ $0.slug == breed.slug }).isEmpty
         )
       }
       
@@ -58,7 +60,9 @@ extension BreedsListPresenter: BreedsListServiceToPresenterProtocol {
       
       var isFavorite = false
       
-      if let favorites = UserDefaults.standard.object(forKey: "favorites") as? [String], favorites.contains(breed) {
+      if let favoritesSaved = UserDefaults.standard.object(forKey: "favorites") as? Data,
+         let favorites = try? JSONDecoder().decode([Favorites].self, from: favoritesSaved),
+         !favorites.filter({ $0.slug == breed }).isEmpty {
         isFavorite = true
       }
       

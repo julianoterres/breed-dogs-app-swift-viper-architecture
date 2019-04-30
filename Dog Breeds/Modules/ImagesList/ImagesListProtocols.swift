@@ -11,7 +11,7 @@ import UIKit
 // MARK: Methods of View to Presenter
 protocol ImagesListViewControllerToPresenterProtocol: class {
   func fetchImages(breed: String)
-  func saveFavorite(breed: String)
+  func saveFavorite(breed: String, images: [URL])
 }
 
 // MARK: Methods of Presenter

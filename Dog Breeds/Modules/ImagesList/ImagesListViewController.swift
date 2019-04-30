@@ -28,7 +28,7 @@ class ImagesListViewController: UIViewController {
   }
   
   @objc func didPressFavorite() {
-    presenter?.saveFavorite(breed: breed.slug)
+    presenter?.saveFavorite(breed: breed.slug, images: images)
   }
   
   func setupView() {
@@ -119,7 +119,7 @@ extension ImagesListViewController: UICollectionViewDelegate, UICollectionViewDa
 extension ImagesListViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let width = ((self.collectionView.frame.width / 2) - self.collectionView.contentInset.left)
+    let width = ((collectionView.frame.width / 2) - collectionView.contentInset.left)
     let height = (width * 1.5)
     return CGSize(width: width, height: height)
   }

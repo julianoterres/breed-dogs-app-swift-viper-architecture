@@ -37,10 +37,12 @@
 		E36E05FF2277A46800178027 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E05FE2277A46800178027 /* UIViewControllerExtension.swift */; };
 		E36E06052277B4A900178027 /* FavoriteListProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06042277B4A900178027 /* FavoriteListProtocols.swift */; };
 		E36E06072277B55600178027 /* FavoritesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06062277B55600178027 /* FavoritesListViewController.swift */; };
-		E36E06092277B5F000178027 /* FavoritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06082277B5F000178027 /* FavoritesListCell.swift */; };
+		E36E06092277B5F000178027 /* FavoritesListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06082277B5F000178027 /* FavoritesListTableCell.swift */; };
 		E36E060B2277B67000178027 /* FavoritesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E060A2277B67000178027 /* FavoritesListPresenter.swift */; };
 		E36E060D2277B70200178027 /* FavoritesListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E060C2277B70200178027 /* FavoritesListRouter.swift */; };
 		E36E06102277C4D300178027 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E060F2277C4D300178027 /* Breed.swift */; };
+		E36E06122277DD5A00178027 /* FavoritesListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06112277DD5A00178027 /* FavoritesListCollectionCell.swift */; };
+		E36E06142277E0A900178027 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E06132277E0A900178027 /* Favorites.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,10 +90,12 @@
 		E36E05FE2277A46800178027 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		E36E06042277B4A900178027 /* FavoriteListProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteListProtocols.swift; sourceTree = "<group>"; };
 		E36E06062277B55600178027 /* FavoritesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListViewController.swift; sourceTree = "<group>"; };
-		E36E06082277B5F000178027 /* FavoritesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListCell.swift; sourceTree = "<group>"; };
+		E36E06082277B5F000178027 /* FavoritesListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListTableCell.swift; sourceTree = "<group>"; };
 		E36E060A2277B67000178027 /* FavoritesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListPresenter.swift; sourceTree = "<group>"; };
 		E36E060C2277B70200178027 /* FavoritesListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListRouter.swift; sourceTree = "<group>"; };
 		E36E060F2277C4D300178027 /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
+		E36E06112277DD5A00178027 /* FavoritesListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListCollectionCell.swift; sourceTree = "<group>"; };
+		E36E06132277E0A900178027 /* Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,9 +290,10 @@
 			isa = PBXGroup;
 			children = (
 				E36E06042277B4A900178027 /* FavoriteListProtocols.swift */,
-				E36E06082277B5F000178027 /* FavoritesListCell.swift */,
+				E36E06112277DD5A00178027 /* FavoritesListCollectionCell.swift */,
 				E36E060A2277B67000178027 /* FavoritesListPresenter.swift */,
 				E36E060C2277B70200178027 /* FavoritesListRouter.swift */,
+				E36E06082277B5F000178027 /* FavoritesListTableCell.swift */,
 				E36E06062277B55600178027 /* FavoritesListViewController.swift */,
 			);
 			path = FavoriteList;
@@ -298,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				E36E060F2277C4D300178027 /* Breed.swift */,
+				E36E06132277E0A900178027 /* Favorites.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -431,6 +437,7 @@
 				E31576E72277800A00D365FE /* BreedsListCell.swift in Sources */,
 				E315770622778D6E00D365FE /* ImagesListProtocols.swift in Sources */,
 				E31576D222777C1B00D365FE /* BreedsListRouter.swift in Sources */,
+				E36E06142277E0A900178027 /* Favorites.swift in Sources */,
 				E31576EC227780F500D365FE /* UrlsApi.swift in Sources */,
 				E31576D422777C3600D365FE /* BreedsListViewController.swift in Sources */,
 				E31576E522777FCD00D365FE /* UIViewExtension.swift in Sources */,
@@ -449,7 +456,8 @@
 				E315770C22778D9D00D365FE /* ImagesListCell.swift in Sources */,
 				E315770222778BE900D365FE /* StringExtension.swift in Sources */,
 				E315770822778D7C00D365FE /* ImagesListRouter.swift in Sources */,
-				E36E06092277B5F000178027 /* FavoritesListCell.swift in Sources */,
+				E36E06092277B5F000178027 /* FavoritesListTableCell.swift in Sources */,
+				E36E06122277DD5A00178027 /* FavoritesListCollectionCell.swift in Sources */,
 				E31576D622777C3F00D365FE /* BreedsListPresenter.swift in Sources */,
 				E36E05FF2277A46800178027 /* UIViewControllerExtension.swift in Sources */,
 				E315770422778D6300D365FE /* ImagesListPresenter.swift in Sources */,

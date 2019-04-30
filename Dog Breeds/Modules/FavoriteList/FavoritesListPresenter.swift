@@ -12,7 +12,7 @@ import Foundation
 class FavoritesListPresenter: FavoritesListPresenterProtocol {
   
   weak var viewController: FavoritesListPresenterToViewControllerProtocol?
-  var router: FavoritesListPresenterToRouterProtocol?
+  var router: FavoritesListRouterProtocol?
   
 }
 
@@ -21,16 +21,11 @@ extension FavoritesListPresenter: FavoritesListViewControllerToPresenterProtocol
   
   func fetchFavorites() {
     
-    if let favorites = UserDefaults.standard.object(forKey: "favorites") as? [String], favorites.count > 0 {
+    if let favoritesSaved = UserDefaults.standard.object(forKey: "favorites") as? Data,
+       let favorites = try? JSONDecoder().decode([Favorites].self, from: favoritesSaved),
+       favorites.count > 0 {
       
-      let favoritesList = favorites.map { (breed) -> Breed in
-        return Breed(
-          name: breed.capitalizingFirstLetter(),
-          slug: breed,
-          favorite: true
-        )
-      }.sorted { $0.name < $1.name }
-      
+      let favoritesList = favorites.sorted { $0.name < $1.name }
       viewController?.showFavorites(favoritesList: favoritesList)
       
     } else {
@@ -39,30 +34,25 @@ extension FavoritesListPresenter: FavoritesListViewControllerToPresenterProtocol
     
   }
   
-  func deleteFavorite(favorite: Breed) {
+  func deleteFavorite(favorite: Favorites) {
     
-    if let favorites = UserDefaults.standard.object(forKey: "favorites") as? [String] {
+    if let favoritesSaved = UserDefaults.standard.object(forKey: "favorites") as? Data,
+       let favorites = try? JSONDecoder().decode([Favorites].self, from: favoritesSaved) {
       
-      let newFavorites = favorites.filter({ $0 != favorite.slug })
+      let newFavorites = favorites.filter({ $0.slug != favorite.slug })
+    
+      guard let newFavoritesEncoded = try? JSONEncoder().encode(newFavorites) else {
+        return
+      }
       
-      UserDefaults.standard.set(newFavorites, forKey: "favorites")
+      UserDefaults.standard.set(newFavoritesEncoded, forKey: "favorites")
       
-      let favoritesList = newFavorites.map { (breed) -> Breed in
-        return Breed(
-          name: breed.capitalizingFirstLetter(),
-          slug: breed,
-          favorite: true
-        )
-        }.sorted { $0.name < $1.name }
+      let favoritesList = newFavorites.sorted { $0.name < $1.name }
       
       viewController?.showFavorites(favoritesList: favoritesList)
       
     }
     
-  }
-  
-  func goToListImages(favorite: Breed) {
-    router?.goToListImages(favorite: favorite)
   }
   
 }

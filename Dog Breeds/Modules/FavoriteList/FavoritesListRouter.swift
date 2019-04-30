@@ -30,13 +30,3 @@ class FavoritesListRouter: FavoritesListRouterProtocol {
   
 }
 
-// MARK: Methods of FavoritesListPresenterToRouterProtocol
-extension FavoritesListRouter: FavoritesListPresenterToRouterProtocol {
-  
-  func goToListImages(favorite: Breed) {
-    let imagesListViewController = ImagesListRouter().build(breed: favorite)
-    viewController?.navigationController?.pushViewController(imagesListViewController, animated: true)
-  }
-  
-}
-

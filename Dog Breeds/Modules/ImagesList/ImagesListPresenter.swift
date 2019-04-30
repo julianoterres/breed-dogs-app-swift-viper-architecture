@@ -23,17 +23,34 @@ extension ImagesListPresenter: ImagesListViewControllerToPresenterProtocol {
     service?.fetchImages(breed: breed)
   }
   
-  func saveFavorite(breed: String) {
+  func saveFavorite(breed: String, images: [URL]) {
     
-    guard var favorites = UserDefaults.standard.object(forKey: "favorites") as? [String] else {
-      UserDefaults.standard.set([breed], forKey: "favorites")
-      viewController?.successSaveFavorite()
+    let favorite = Favorites(
+      name: breed.capitalizingFirstLetter(),
+      slug: breed,
+      images: Array(images.prefix(5))
+    )
+    
+    if let favoritesSaved = UserDefaults.standard.object(forKey: "favorites") as? Data,
+       var favorites = try? JSONDecoder().decode([Favorites].self, from: favoritesSaved) {
+      
+      if favorites.filter({ $0.slug == breed }).isEmpty {
+        favorites.append(favorite)
+        
+        guard let favoritesEncoded = try? JSONEncoder().encode(favorites) else {
+          return
+        }
+        
+        UserDefaults.standard.set(favoritesEncoded, forKey: "favorites")
+        viewController?.successSaveFavorite()
+        
+      }
+      
       return
     }
     
-    if favorites.contains(breed) == false {
-      favorites.append(breed)
-      UserDefaults.standard.set(favorites, forKey: "favorites")
+    if let favoriteEncoded = try? JSONEncoder().encode([favorite]) {
+      UserDefaults.standard.set(favoriteEncoded, forKey: "favorites")
       viewController?.successSaveFavorite()
     }
     
@@ -47,7 +64,11 @@ extension ImagesListPresenter: ImagesListServiceToPresenterProtocol {
   func fetchedImages(images: [String]) {
     
     let imagesList = images.map { (image) -> URL in
-      return URL(string: image)!
+      
+      let url = image.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
+      
+      return URL(string: url)!
+      
     }
     
     viewController?.showImages(imagesList: imagesList)

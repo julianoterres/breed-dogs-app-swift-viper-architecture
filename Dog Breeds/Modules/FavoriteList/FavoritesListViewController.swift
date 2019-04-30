@@ -16,7 +16,7 @@ class FavoritesListViewController: UIViewController {
   let notFoundLabel = UILabel()
   
   var presenter: FavoritesListViewControllerToPresenterProtocol?
-  var favorites: [Breed] = []
+  var favorites: [Favorites] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,8 +56,8 @@ class FavoritesListViewController: UIViewController {
     view.addSubview(tableView)
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(FavoritesListCell.self, forCellReuseIdentifier: FavoritesListCell.identifier)
-    tableView.estimatedRowHeight = FavoritesListCell.height
+    tableView.register(FavoritesListTableCell.self, forCellReuseIdentifier: FavoritesListTableCell.identifier)
+    tableView.estimatedRowHeight = FavoritesListTableCell.height
     tableView.rowHeight = UITableView.automaticDimension
     tableView.separatorStyle = .none
     tableView.isHidden = true
@@ -83,9 +83,10 @@ class FavoritesListViewController: UIViewController {
 // MARK: Methods of FavoritesListPresenterToViewControllerProtocol
 extension FavoritesListViewController: FavoritesListPresenterToViewControllerProtocol {
   
-  func showFavorites(favoritesList: [Breed]) {
+  func showFavorites(favoritesList: [Favorites]) {
     favorites = favoritesList
     tableView.reloadData()
+    notFoundLabel.isHidden = true
     tableView.isHidden = false
   }
   
@@ -99,7 +100,7 @@ extension FavoritesListViewController: FavoritesListPresenterToViewControllerPro
 // MARK: Methods of FavoritesListCellToViewControllerProtocol
 extension FavoritesListViewController: FavoritesListCellToViewControllerProtocol {
   
-  func didPressDelete(favorite: Breed) {
+  func didPressDelete(favorite: Favorites) {
     presenter?.deleteFavorite(favorite: favorite)
   }
   
@@ -113,15 +114,41 @@ extension FavoritesListViewController: UITableViewDelegate, UITableViewDataSourc
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesListCell.identifier, for: indexPath) as? FavoritesListCell {
-      cell.setup(favoriteSelected: favorites[indexPath.row], viewDelegate: self)
+    if let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesListTableCell.identifier, for: indexPath) as? FavoritesListTableCell {
+      cell.setup(favoriteSelected: favorites[indexPath.row], viewDelegate: self, rowTableCell: indexPath.row)
       return cell
     }
     return UITableViewCell()
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    presenter?.goToListImages(favorite: favorites[indexPath.row])
+}
+
+// MARK: Methods of UITableViewDelegate and UITableViewDataSource
+extension FavoritesListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return favorites[collectionView.tag].images.count
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesListCollectionCell.identifier, for: indexPath) as? FavoritesListCollectionCell {
+      cell.setup(urlImage: favorites[collectionView.tag].images[indexPath.row])
+      return cell
+    }
+    return UICollectionViewCell()
+  }
+  
+}
+
+// MARK: Methods of UICollectionViewDelegateFlowLayout
+extension FavoritesListViewController: UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let totalImages = favorites[collectionView.tag].images.count
+    let marginRemove = (totalImages > 2) ? 20 : 0
+    let width = ((collectionView.frame.width / 2) - CGFloat(marginRemove))
+    let height = ((collectionView.frame.width / 2) * 1.5)
+    return CGSize(width: width, height: height)
   }
   
 }
